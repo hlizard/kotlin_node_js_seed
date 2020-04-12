@@ -1,15 +1,21 @@
 (function (root, factory) {
   if (typeof define === 'function' && define.amd)
-    define(['exports', 'kotlin'], factory);
+    define(['exports', 'kotlin', 'kotlin-test', 'spek-dsl'], factory);
   else if (typeof exports === 'object')
-    factory(module.exports, require('kotlin'));
+    factory(module.exports, require('kotlin'), require('kotlin-test'), require('spek-dsl'));
   else {
     if (typeof kotlin === 'undefined') {
       throw new Error("Error loading module 'common'. Its dependency 'kotlin' was not found. Please, check whether 'kotlin' is loaded prior to 'common'.");
     }
-    root.common = factory(typeof common === 'undefined' ? {} : common, kotlin);
+    if (typeof this['kotlin-test'] === 'undefined') {
+      throw new Error("Error loading module 'common'. Its dependency 'kotlin-test' was not found. Please, check whether 'kotlin-test' is loaded prior to 'common'.");
+    }
+    if (typeof this['spek-dsl'] === 'undefined') {
+      throw new Error("Error loading module 'common'. Its dependency 'spek-dsl' was not found. Please, check whether 'spek-dsl' is loaded prior to 'common'.");
+    }
+    root.common = factory(typeof common === 'undefined' ? {} : common, kotlin, this['kotlin-test'], this['spek-dsl']);
   }
-}(this, function (_, Kotlin) {
+}(this, function (_, Kotlin, $module$kotlin_test, $module$spek_dsl) {
   'use strict';
   var arrayListOf = Kotlin.kotlin.collections.arrayListOf_i5x0yv$;
   var Kind_CLASS = Kotlin.Kind.CLASS;
@@ -18,6 +24,12 @@
   var numberToInt = Kotlin.numberToInt;
   var Kind_OBJECT = Kotlin.Kind.OBJECT;
   var Math_0 = Math;
+  var assertEquals = $module$kotlin_test.kotlin.test.assertEquals_3m0tl5$;
+  var Unit = Kotlin.kotlin.Unit;
+  var describe = $module$spek_dsl.org.spekframework.spek2.style.specification.describe_5s2990$;
+  var Spek = $module$spek_dsl.org.spekframework.spek2.Spek;
+  TodoEventEmitterSpec.prototype = Object.create(Spek.prototype);
+  TodoEventEmitterSpec.prototype.constructor = TodoEventEmitterSpec;
   function TodoEventEmitter() {
     this.events_0 = LinkedHashMap_init();
   }
@@ -120,6 +132,30 @@
     }
     return Utils_instance;
   }
+  function TodoEventEmitterSpec() {
+    Spek.call(this, TodoEventEmitterSpec_init$lambda);
+  }
+  function TodoEventEmitterSpec_init$lambda$lambda$lambda$lambda($receiver) {
+    assertEquals(1, 1);
+    return Unit;
+  }
+  function TodoEventEmitterSpec_init$lambda$lambda$lambda($receiver) {
+    $receiver.it_wkze1r$('returns the sum of its arguments', void 0, void 0, TodoEventEmitterSpec_init$lambda$lambda$lambda$lambda);
+    return Unit;
+  }
+  function TodoEventEmitterSpec_init$lambda$lambda($receiver) {
+    $receiver.describe_npqwdt$('addition', void 0, TodoEventEmitterSpec_init$lambda$lambda$lambda);
+    return Unit;
+  }
+  function TodoEventEmitterSpec_init$lambda($receiver) {
+    describe($receiver, 'A calculator', void 0, TodoEventEmitterSpec_init$lambda$lambda);
+    return Unit;
+  }
+  TodoEventEmitterSpec.$metadata$ = {
+    kind: Kind_CLASS,
+    simpleName: 'TodoEventEmitterSpec',
+    interfaces: [Spek]
+  };
   var package$events = _.events || (_.events = {});
   package$events.TodoEventEmitter = TodoEventEmitter;
   var package$model = _.model || (_.model = {});
@@ -128,6 +164,7 @@
   Object.defineProperty(package$utils, 'Utils', {
     get: Utils_getInstance
   });
+  _.TodoEventEmitterSpec = TodoEventEmitterSpec;
   Kotlin.defineModule('common', _);
   return _;
 }));

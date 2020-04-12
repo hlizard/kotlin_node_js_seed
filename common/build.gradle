@@ -5,6 +5,17 @@ apply plugin: "kotlin2js"
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-js:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-test-js:$kotlin_version"
+    testImplementation "org.jetbrains.kotlin:kotlin-test-junit"
+
+    // some version of Kotlin
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+
+    testImplementation "org.spekframework.spek2:spek-dsl-js:$spek_version"
+    testRuntimeOnly "org.spekframework.spek2:spek-runner-junit5:$spek_version"
+
+    // spek requires kotlin-reflect, can be omitted if already in the classpath
+    testRuntimeOnly "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
 }
 
 sourceSets {
@@ -19,6 +30,14 @@ compileKotlin2Js {
     kotlinOptions.sourceMap = true
     kotlinOptions.sourceMapEmbedSources = "always"
 }
+
+// setup the test task
+test {
+    useJUnitPlatform {
+        includeEngines 'spek2'
+    }
+}
+
 
 def outputDir = "${projectDir}/../node_modules/common"
 
